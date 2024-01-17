@@ -1,7 +1,9 @@
-// const fs = require('fs/promises')
-const contactsPath = path.join(__dirname, 'models', 'contacts.json');
+import path from "path"
+import fs from "fs/promises"
 
-const listContacts = async () => {
+const contactsPath = path.join(process.cwd(), 'models', 'contacts.json');
+
+export const listContacts = async () => {
   try {
     const data = await fs.readFile(contactsPath, 'utf8');
     const parseData = JSON.parse(data);
@@ -11,32 +13,23 @@ const listContacts = async () => {
   }
 }
 
-const getContactById = async (contactId) => {
+export const getContactById = async (contactId) => {
+  console.log("xd")
   try {
     const data = await fs.readFile(contactsPath, 'utf-8');
     const parseData = JSON.parse(data);
-    parseData.map(contact => {
-      if (contactId == contact.id) {
-        message = `${contact.name}\n${contact.email}\n${contact.phone}`.green
-      }
-    });
+    const [contact] = parseData.filter(el => el.id === contactId)
 
-    console.log(message)
+    return contact
   } catch (err) {
     return console.log(err);
   }
 }
 
-const removeContact = async (contactId) => { }
+export const removeContact = async (contactId) => { console.log("xd") }
 
-const addContact = async (body) => { }
+export const addContact = async (body) => { console.log("xd") }
 
-const updateContact = async (contactId, body) => { }
+export const updateContact = async (contactId, body) => { console.log("xd") }
 
-module.exports = {
-  listContacts,
-  getContactById,
-  removeContact,
-  addContact,
-  updateContact,
-}
+
