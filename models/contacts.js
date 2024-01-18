@@ -45,7 +45,6 @@ export const removeContact = async (contactId) => {
 
 export const addContact = async (body) => {
   try {
-    console.log(body)
     const Id = nanoid()
     const newContact = {
       name: body.name,
@@ -53,17 +52,17 @@ export const addContact = async (body) => {
       phone: body.phone,
       id: Id,
     }
-    console.log(newContact)
     const data = await fs.readFile(contactsPath, 'utf-8');
-    console.log("2")
     const parseData = JSON.parse(data);
-    const contact = parseData.find(contact => contact.id === contactId)
+    const contact = parseData.find(contact => contact.name === body.name)
     const newContacts = [...parseData]
-    if (contact) {
-
+    newContacts.push(newContact)
+    if (!contact) {
       const updatedContacts = JSON.stringify(newContacts, null, 2);
-      await fs.writeFile(contactsPath, updatedContacts, 'utf-8')
+      fs.writeFile(contactsPath, updatedContacts, 'utf-8')
       return true
+    } else {
+      return false
     }
 
   } catch (err) {
@@ -74,6 +73,38 @@ export const addContact = async (body) => {
 
 }
 
-export const updateContact = async (contactId, body) => { console.log("xd") }
+export const updateContact = async (contactId, body) => {
+  try {
+    const Id = nanoid()
+    const newContact = {
+      name: body.name,
+      email: body.email,
+      phone: body.phone,
+      id: contactId,
+    }
+    const data = await fs.readFile(contactsPath, 'utf-8');
+    const parseData = JSON.parse(data);
+    const contact = parseData.find(contact => contact.id === contactId)
+    const index = parseData.findIndex(contact => contact.id === contactId)
+
+    const copy = [...parseData]
+    copy.splice(index, 0, newContact)
+
+    console.log(copy)
+    // if (!contact) {
+    //   newContacts.push(newContact)
+    //   const updatedContacts = JSON.stringify(newContacts, null, 2);
+    //   fs.writeFile(contactsPath, updatedContacts, 'utf-8')
+    // } else {
+
+
+    const updatedContacts = JSON.stringify(copy, null, 2);
+    fs.writeFile(contactsPath, updatedContacts, 'utf-8')
+
+  } catch (err) {
+    console.log(err)
+  }
+
+}
 
 
