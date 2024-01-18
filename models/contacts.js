@@ -44,33 +44,34 @@ export const removeContact = async (contactId) => {
 }
 
 export const addContact = async (body) => {
-  const ID = nanoid();
-
   try {
+    console.log(body)
+    const Id = nanoid()
     const newContact = {
       name: body.name,
       email: body.email,
       phone: body.phone,
-      id: ID,
-    };
-
+      id: Id,
+    }
+    console.log(newContact)
     const data = await fs.readFile(contactsPath, 'utf-8');
-    let dataParse = JSON.parse(data);
-    console.log(newContact, "xd")
-    if (dataParse.find(contact => contact.name.toLowerCase() === newContact.name.toLowerCase())) {
-      return false
-    } else {
-      dataParse.push(newContact);
+    console.log("2")
+    const parseData = JSON.parse(data);
+    const contact = parseData.find(contact => contact.id === contactId)
+    const newContacts = [...parseData]
+    if (contact) {
 
-      const updatedContacts = JSON.stringify(dataParse, null, 2);
-      fs.writeFile(contactsPath, updatedContacts, 'utf-8');
+      const updatedContacts = JSON.stringify(newContacts, null, 2);
+      await fs.writeFile(contactsPath, updatedContacts, 'utf-8')
       return true
     }
 
-
   } catch (err) {
-    return console.log(err);
+    console.log(err)
   }
+
+
+
 }
 
 export const updateContact = async (contactId, body) => { console.log("xd") }

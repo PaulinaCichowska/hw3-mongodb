@@ -15,7 +15,7 @@ const test = [{
 
 router.get('/', async (req, res, next) => {
   const list = await listContacts();
-
+  console.log(list)
   if (!list) {
     return res.status(404).json({ message: "not found" });
   }
@@ -44,11 +44,12 @@ router.post('/', async (req, res, next) => {
   const { name, phone, email } = req.body;
   const updatedContacts = await addContact({ name, phone, email })
   if (updatedContacts) {
-    res.status(201).json({ name });
+    return res.status(201).json({ name });
   }
-  res.status(404).json({ message: "missing required name - field" })
+  return res.status(404).json({ message: "not found" });
 
-})
+
+});
 
 
 router.put('/:contactId', async (req, res, next) => {
