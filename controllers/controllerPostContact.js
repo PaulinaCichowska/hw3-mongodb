@@ -1,7 +1,6 @@
 import { addContact } from "#models/contacts.js";
 export const postContact = async (req, res, next) => {
     const result = req.body;
-
     try {
         const updatedContact = await addContact(result)
         res.status(201).json(updatedContact);
