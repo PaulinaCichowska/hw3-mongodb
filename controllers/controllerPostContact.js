@@ -1,20 +1,15 @@
-import Joi from "joi";
 import { addContact } from "#models/contacts.js";
-const schema = Joi.object({
-    name: Joi.string().min(3).max(30).required(),
-    email: Joi.string().required(),
-    phone: Joi.required()
-});
-
 export const postContact = async (req, res, next) => {
-    const result = schema.validate(req.body);
-    const addedContact = result.value
-    const updatedContacts = await addContact({ result })
+    const result = req.body;
 
-    if (result.error) {
-        return res.json({ "message": "missing required name - field" })
-    } else {
-        return res.status(201).json({ message: "Contact has been added successfully" });
+    try {
+        const updatedContact = await addContact(result)
+        res.status(201).json(updatedContact);
+    } catch (err) {
+        if (err.code === 11000) {
+            res.status(400).json({ "message": 'Email must be unique' });
+        }
+        next(err)
     }
 }
 

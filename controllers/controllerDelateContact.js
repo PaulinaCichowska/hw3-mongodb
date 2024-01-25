@@ -1,5 +1,4 @@
 import { removeContact } from "#models/contacts.js";
-
 export const delateContact = async (req, res, next) => {
     const { contactId } = req.params;
     const updatedContacts = await removeContact(contactId)
