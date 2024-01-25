@@ -1,6 +1,5 @@
 import { Contact } from "./Schema.js"
 
-
 export const listContacts = () => {
   return Contact.find()
 }
@@ -22,8 +21,7 @@ export const updateContact = async ({ contactId, toUpdate, upsert = false }) => 
   return Contact.findOneAndUpdate(
     { _id: contactId },
     { $set: toUpdate },
-    { new: true, runBalidators: true, strict: "throw", upsert }
+    { new: true, runValidators: true, strict: "throw", upsert }
   )
 }
-
 
